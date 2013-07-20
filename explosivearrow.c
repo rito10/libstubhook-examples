@@ -1,80 +1,28 @@
-#include <stubhook.h>
-#include <stdbool.h>
-#include <stddef.h>
+/ / Made by TreeBl
+unsigned int * makeNewItem (int id, int VTABLE, materialDword int, int pictureId, char * name)
+{
+unsigned int * Producto = new unsigned int [0xb8];
+int * DISA = (int *) (materialDword-0x1000 + myPidAddr);
+TileNew ((int) artículo, id, pictureId, * DISA);
 
-typedef void Level;
-typedef void User;
-typedef void Minecraft;
+elemento [0] = VTABLE 8-0 x1000 + myPidAddr;
+artículo [3] = 0;
+punto [4] = 0;
+artículo [5] = 0;
+artículo [6] = 0x3f666666;
+artículo [7] = 0x3E000000;
+artículo [8] = 0x3f666666;
+/ / Int idk = item [2];
+char * tst = (char *) (0x216230-0x1000 + myPidAddr + id);
+* Tst = 0x1;
+TileInit (material (int));
+setDestroyTime (material (int), 0x3DCCCCCD);
+setSoundType ((int) artículo, 0x216358-0x1000 + myPidAddr);
+artículo [15] = 1;
+std :: string testa = (std :: string) Nombre;
+setDescriptionId (material (int), testa);
+int * inTable = (int *) (0x2154D0-0x1000 + myPidAddr + (id * 4));
+* Artículo inTable = (int);
 
-typedef struct {
-	void* vt;
-	float x; // 0x4
-	float y; // 0x8
-	float z; // 0xc
-} Entity;
-
-static Level* level;
-static bool inArrowTick, arrowHit;
-
-
-static void (*Entity$$remove)(void* self);
-static void (*Level$$explode)(void* self, void* entity, float x, float y, float z, float r);
-
-
-SHHook(void*, Arrow$$tick, Entity* self) {
-	inArrowTick = true;
-	void* ret = _Arrow$$tick(self);
-	inArrowTick = false;
-	
-	if(arrowHit) {
-		arrowHit = false;
-		// 3.1 is size of TNT explosion
-		Level$$explode(level, NULL, self->x, self->y, self->z, 3.1);
-		Entity$$remove(self);
-	}
-	
-	return ret;
-}
-
-SHHook(void*, Level$$playSound, Level* self, Entity* entity, void* string, float a, float b) {
-	if(inArrowTick)
-		arrowHit = true;
-	
-	return _Level$$playSound(self, entity, string, a, b);
-}
-
-SHHook(Entity*, LocalPlayer$$LocalPlayer, Entity* self, Minecraft* minecraft, Level* newLevel, User* user, int a, bool b) {
-	level = newLevel;
-	return _LocalPlayer$$LocalPlayer(self, minecraft, newLevel, user, a, b);
-}
-
-SHConstructor {
-	SHAppVersion("0.7.2.0") {
-		SHStub(SHAddr(0xb51d8), Entity$$remove);
-		SHStub(SHAddr(0xf4828), Level$$explode);
-		SHStub(SHAddr(0xcbfbc), Arrow$$tick);
-		SHStub(SHAddr(0xf2668), Level$$playSound);
-		SHStub(SHAddr(0x5de5c), LocalPlayer$$LocalPlayer);
-	}
-	SHAppVersion("0.7.1.0") {
-		SHStub(SHAddr(0xb1a64), Entity$$remove);
-		SHStub(SHAddr(0xf0e48), Level$$explode);
-		SHStub(SHAddr(0xc87e0), Arrow$$tick);
-		SHStub(SHAddr(0xeec88), Level$$playSound);
-		SHStub(SHAddr(0x5abc0), LocalPlayer$$LocalPlayer);
-	}
-	SHAppVersion("0.6.1.0") {
-		SHStub(SHAddr(0xa2e58), Entity$$remove);
-		SHStub(SHAddr(0xdf8a0), Level$$explode);
-		SHStub(SHAddr(0xb8e3c), Arrow$$tick);
-		SHStub(SHAddr(0xddae8), Level$$playSound);
-		SHStub(SHAddr(0x52ca0), LocalPlayer$$LocalPlayer);
-	}
-	SHOtherVersion {
-		return;
-	}
-	
-	SHApplyHook(Arrow$$tick);
-	SHApplyHook(Level$$playSound);
-	SHApplyHook(LocalPlayer$$LocalPlayer);
+volver el artículo;
 }
